@@ -1,0 +1,36 @@
+﻿@model MvcWhatsUp.Models.User
+
+@{
+    ViewData["Title"] = "Edit User";
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+}
+
+<div class="container py-5">
+    <h4 class="display-4 mb-4">Edit User</h4>
+    <form action="/Users/Edit" method="POST">
+        <input type="hidden" name="UserId" value="@Model?.UserId" />
+        <div class="form-group w-50 mb-3">
+            <label for="UserName">Name:</label>
+            <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Enter name" required value="@Model?.UserName">
+        </div>
+        <div class="form-group w-50 mb-3">
+            <label for="MobileNumber">Mobile Number:</label>
+            <input type="text" class="form-control" id="MobileNumber" name="MobileNumber" placeholder="Enter mobile number" required value="@Model?.MobileNumber">
+        </div>
+        <div class="form-group w-50 mb-3">
+            <label for="EmailAddress">Email Address:</label>
+            <input type="email" class="form-control" id="EmailAddress" placeholder="Enter email" name="EmailAddress" required value="@Model?.EmailAddress">
+        </div>
+        <div class="form-group w-50 mb-3">
+            <label for="Password">Password:</label>
+            <input type="password" class="form-control" id="Password" placeholder="Enter password" name="Password" required value="@Model?.Password">
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Update</button>
+        <a href="/Users" class="btn btn-secondary mt-3 ms-2">Back to list</a>
+    </form>
+</div>

@@ -1,0 +1,72 @@
+###############
+# Build output
+###############
+bin/
+obj/
+artifacts/
+
+########################
+# User-specific files
+########################
+*.user
+*.vspscc
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+
+##################
+# ASP.NET Core
+##################
+appsettings.*.json
+
+###############
+# Logs
+###############
+*.log
+
+########################
+# OS & Editor junk
+########################
+.DS_Store
+Thumbs.db
+*.swp
+*.bak
+*.tmp
+
+########################
+# Rider
+########################
+.idea/
+
+########################
+# VS Code
+########################
+.vscode/
+
+########################
+# NuGet
+########################
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+project.lock.json
+project.fragment.lock.json
+
+########################
+# Testing
+########################
+TestResults/
+coverage/
+
+########################
+# dotCover
+########################
+*.dotCover
+
+########################
+# Others (optional)
+########################
+# Ignore published files if using dotnet publish
+publish/

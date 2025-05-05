@@ -1,0 +1,27 @@
+﻿@model MvcWhatsUp.Models.Message
+
+@{
+    ViewData["Title"] = "Add message";
+    User? receiver = ViewData["ReceiverUser"] as User;
+    if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+}
+
+<h1>Add Message to @receiver?.UserName</h1>
+
+<form action="/Chat/AddMessage" method="POST">
+    <input hidden type="number" name="SenderUserId" value="@Model?.SenderUserId" />
+    <input hidden type="number" name="ReceiverUserId" value="@Model?.ReceiverUserId" />
+    <div class="form-group">
+        <label for="MessageText">Message:</label>
+        <input type="text" id="MessageText" name="MessageText" class="form-control" required value="@Model?.MessageText" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+
+<a href="/Chat/DisplayChat/@Model?.ReceiverUserId">Back to list</a>

@@ -1,0 +1,43 @@
+﻿@model MvcWhatsUp.ViewModels.ChatViewModel
+
+@{
+	ViewData["Title"] = "Display Chat";
+}
+
+<p><a href="/Chat/AddMessage/@Model.ReceivingUser.UserId" class="btn btn-primary">Add message</a></p>
+
+@{
+	if (TempData["ConfirmMessage"] != null)
+	{
+		<div class="alert alert-success">
+			@TempData["ConfirmMessage"]
+		</div>
+	}
+}
+
+<h3>Chat between @Model.SendingUser.UserName and @Model.ReceivingUser.UserName</h3>
+
+<table class="table table-hover">
+	<thead class="table-dark">
+		<tr>
+			<th>Message</th>
+			<th>Date/Time</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var message in Model.Messages)
+		{
+			<tr>
+				@if (message.SenderUserId == Model.SendingUser.UserId)
+				{
+					<td class="text-start">@Model.SendingUser.UserName: @message.MessageText</td>
+				}
+				else
+				{
+					<td class="text-end">@Model.ReceivingUser.UserName: @message.MessageText</td>
+				}
+				<td>@message.SendAt</td>
+			</tr>
+		}
+	</tbody>
+</table>
