@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcWhatsUp.Models;
-using MvcWhatsUp.Repositories;
+using MvcWhatsUp.Services;
 
 namespace MvcWhatsUp.Controllers
 {
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
-        private IUsersRepository _usersRepository;
+        private IUsersService _usersService;
 
-        public UsersController(IUsersRepository usersRepositories)
+        public UsersController(IUsersService usersService)
         {
-            _usersRepository = usersRepositories;
+            _usersService = usersService;
         }
 
         public IActionResult Index()
@@ -19,7 +19,7 @@ namespace MvcWhatsUp.Controllers
 
             ViewData["LoggedInUser"] = loggedInUser;
 
-            List<User> users = _usersRepository.GetAll();
+            List<User> users = _usersService.GetAll();
             return View(users);
         }
         public IActionResult Create()
@@ -35,14 +35,14 @@ namespace MvcWhatsUp.Controllers
         [HttpGet("Users/Edit/{userId}")]
         public IActionResult Edit(int userId)
         {
-            User? user = _usersRepository.GetById(userId);
+            User? user = _usersService.GetById(userId);
             return View(user);
         }
 
         [HttpGet("Users/Delete/{userId}")]
         public IActionResult Delete(int userId)
         {
-            User? user = _usersRepository.GetById(userId);
+            User? user = _usersService.GetById(userId);
             return View(user);
         }
 
@@ -51,30 +51,30 @@ namespace MvcWhatsUp.Controllers
         {
             try
             {
-                _usersRepository.Add(user);
+                _usersService.Add(user);
                 TempData["ConfirmMessage"] = "User has been added successfully!";
                 return RedirectToAction("Index", "Users");
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Error: " + ex.Message;
-                return View(ex);
+                return View(user);
             }
         }
 
-        [HttpPost("Users/Edit")]
-        public IActionResult Update(User user)
+        [HttpPost]
+        public IActionResult Edit(User user)
         {
             try
             {
-                _usersRepository.Update(user);
+                _usersService.Update(user);
                 TempData["ConfirmMessage"] = "User has been updated successfully!";
                 return RedirectToAction("Index", "Users");
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Error: " + ex.Message;
-                return View(ex);
+                return View(user);
             }
         }
 
@@ -83,20 +83,20 @@ namespace MvcWhatsUp.Controllers
         {
             try
             {
-                _usersRepository.Delete(userId);
+                _usersService.Delete(userId);
                 TempData["ConfirmMessage"] = "User has been deleted successfully!";
                 return RedirectToAction("Index", "Users");
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Error: " + ex.Message;
-                return View(ex);
+                return View();
             }
         }
         [HttpPost("Users/Login")]
         public IActionResult Login(Login loginModel)
         {
-            User? user = _usersRepository.GetByLoginCredentials(loginModel.UserName, loginModel.Password);
+            User? user = _usersService.GetByLoginCredentials(loginModel.UserName, loginModel.Password);
             if (user == null)
             {
                 ViewBag.ErrorMessage = "Invalid username or password.";
@@ -122,8 +122,26 @@ namespace MvcWhatsUp.Controllers
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "Error: " + ex.Message;
-                return View(ex);
+                return View();
             }
+        }
+
+        [HttpPost]
+        public IActionResult SetPreferredTheme(string? theme)
+        {
+            if(theme != null)
+            {
+                CookieOptions options = new CookieOptions()
+                {
+                    Expires = DateTimeOffset.Now.AddDays(30),
+                    Path = "/",
+                    Secure = true,
+                    HttpOnly = true,
+                    IsEssential = true,
+                };
+                Response.Cookies.Append("PreferredTheme", theme, options);
+            }
+            return RedirectToAction("Index", "Users");
         }
 
     }

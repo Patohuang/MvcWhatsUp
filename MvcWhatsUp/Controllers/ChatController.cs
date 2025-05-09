@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MvcWhatsUp.Models;
-using MvcWhatsUp.Repositories;
 using MvcWhatsUp.ViewModels;
+using MvcWhatsUp.Services;
 
 namespace MvcWhatsUp.Controllers
 {
     public class ChatController : Controller
     {
-        private readonly DbChatRepository _chatRepository;
-        private readonly DbUsersRepository _usersRepository;
+        private readonly IChatsService _chatsService;
+        private readonly IUsersService _usersService;
 
-        public ChatController(IConfiguration configuration)
+        public ChatController(IChatsService chatsService, IUsersService usersService)
         {
-            _chatRepository = new DbChatRepository(configuration);
-            _usersRepository = new DbUsersRepository(configuration);
+            _chatsService = chatsService;
+            _usersService = usersService;
         }
 
         [HttpGet]
@@ -34,7 +34,7 @@ namespace MvcWhatsUp.Controllers
             }
 
             // get the receiving User so we can display the name in the view
-            User? receiver = _usersRepository.GetById((int)id);
+            User? receiver = _usersService.GetById((int)id);
             ViewData["ReceiverUser"] = receiver;
 
             Message message = new Message();
@@ -49,7 +49,7 @@ namespace MvcWhatsUp.Controllers
             try
             {
                 message.SendAt = DateTime.Now;
-                _chatRepository.AddMessage(message);
+                _chatsService.AddMessage(message);
 
                 //confirm
                 TempData["ConfirmMessage"] = "Messagge has been added successfully!";
@@ -84,14 +84,14 @@ namespace MvcWhatsUp.Controllers
             }
 
             // get the receiving User so we can display the name in the view
-            User? receivingUser = _usersRepository.GetById((int)id);
+            User? receivingUser = _usersService.GetById((int)id);
             if (receivingUser == null)
             {
                 return RedirectToAction("Index", "Users");
             }
 
             //get all messages between the two users
-            List<Message> chatMessages = _chatRepository.GetMessages(loggedInuserId.UserId, receivingUser.UserId);
+            List<Message> chatMessages = _chatsService.GetMessages(loggedInuserId.UserId, receivingUser.UserId);
 
             //store data in the chat model
             ChatViewModel chatViewModel = new ChatViewModel(chatMessages, loggedInuserId, receivingUser);

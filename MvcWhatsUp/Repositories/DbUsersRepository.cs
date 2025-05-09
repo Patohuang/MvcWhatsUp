@@ -108,11 +108,10 @@ namespace MvcWhatsUp.Repositories
         {
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
-                string query = "UPDATE Users SET Deleted = @deleted WHERE UserID = @userId";
+                string query = "DELETE FROM Users WHERE UserID = @userId";
                 SqlCommand command = new SqlCommand(query, connection);
 
                 command.Parameters.AddWithValue("@userId", userId);
-                command.Parameters.AddWithValue("@deleted", true);
                 command.Connection.Open();
                 command.ExecuteNonQuery();
             }
@@ -135,6 +134,20 @@ namespace MvcWhatsUp.Repositories
                 }
                 reader.Close();
                 return null;
+            }
+        }
+
+        public bool EmailAddressExists(string emailAddress)
+        {
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                string query = "SELECT COUNT(*) FROM Users WHERE EmailAddress = @emailAddress";
+                SqlCommand command = new SqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@emailAddress", emailAddress);
+                command.Connection.Open();
+                int count = (int)command.ExecuteScalar();
+                return count > 0;
             }
         }
     }

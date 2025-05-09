@@ -11,6 +11,9 @@ namespace MvcWhatsUp
             /*builder.Services.AddSingleton<Repositories.IUsersRepository, Repositories.DummyUsersRepository>();*/
             builder.Services.AddSingleton<Repositories.IUsersRepository, Repositories.DbUsersRepository>();
             builder.Services.AddSingleton<Repositories.IChatsRepository, Repositories.DbChatRepository>();
+            builder.Services.AddSingleton<Services.IUsersService, Services.UsersService>();
+            builder.Services.AddSingleton<Services.IChatsService, Services.ChatsService>();
+
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddSession(options =>
             {
