@@ -1,13 +1,9 @@
 ﻿@model MvcWhatsUp.Models.Login
 @{
     ViewData["Title"] = "Login";
-    if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["ErrorMessage"]
-        </div>
-    }
 }
+
+<partial name="_ErrorMessage" model="@TempData["ErrorMessage"]" />
 
 <div class="container py-5">
     <h3 class="display-4 mb-4">Login</h3>

@@ -6,14 +6,7 @@
 
 <p><a href="/Chat/AddMessage/@Model.ReceivingUser.UserId" class="btn btn-primary">Add message</a></p>
 
-@{
-	if (TempData["ConfirmMessage"] != null)
-	{
-		<div class="alert alert-success">
-			@TempData["ConfirmMessage"]
-		</div>
-	}
-}
+<partial name="_ConfirmMessage" model="@TempData["ConfirmMessage"]"  />
 
 <h3>Chat between @Model.SendingUser.UserName and @Model.ReceivingUser.UserName</h3>
 

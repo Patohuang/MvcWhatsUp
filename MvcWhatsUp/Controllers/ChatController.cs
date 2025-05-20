@@ -5,7 +5,7 @@ using MvcWhatsUp.Services;
 
 namespace MvcWhatsUp.Controllers
 {
-    public class ChatController : Controller
+    public class ChatController : BaseController
     {
         private readonly IChatsService _chatsService;
         private readonly IUsersService _usersService;
@@ -14,6 +14,12 @@ namespace MvcWhatsUp.Controllers
         {
             _chatsService = chatsService;
             _usersService = usersService;
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
         }
 
         [HttpGet]
@@ -98,5 +104,6 @@ namespace MvcWhatsUp.Controllers
 
             return View(chatViewModel);
         }
+
     }
 }

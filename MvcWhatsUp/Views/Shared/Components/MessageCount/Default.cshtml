@@ -1,0 +1,13 @@
+﻿@model int?
+
+@{
+	if (Model == null)
+	{
+		<span>-</span>;
+	}
+	else
+	{
+		<span>@Model messages</span>
+		;
+	}
+}

@@ -60,5 +60,22 @@ namespace MvcWhatsUp.Repositories
                 command.ExecuteNonQuery();
             }
         }
+        public List<Message> GetLastMessages(int userId)
+        {
+            List<Message> messages = new List<Message>();
+            using (SqlConnection connection = new SqlConnection(_connectionString))
+            {
+                string query = "SELECT * FROM Messages WHERE ReceiverUserId = @userId ORDER BY SendAt DESC";
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@userId", userId);
+                command.Connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    messages.Add(ReadMessage(reader));
+                }
+            }
+            return messages;
+        }
     }
 }

@@ -2,13 +2,9 @@
 
 @{
     ViewData["Title"] = "Edit User";
-    if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["ErrorMessage"]
-        </div>
-    }
 }
+
+<partial name="_ErrorMessage" model="@TempData["ErrorMessage"]" />
 
 <div class="container py-5">
     <h4 class="display-4 mb-4">Edit User</h4>

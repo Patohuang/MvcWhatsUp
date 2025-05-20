@@ -4,14 +4,7 @@
     User? loggedInUser = (User?)ViewData["LoggedInUser"];
 }
 
-@{
-    if (TempData["ConfirmMessage"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["ConfirmMessage"]
-        </div>
-    }
-}
+<partial name="_ConfirmMessage" model="@TempData["ConfirmMessage"]" />
 
 <div class="container py-5">
     <h1 class="display-4 mb-4">Users</h1>

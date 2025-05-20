@@ -17,5 +17,9 @@ namespace MvcWhatsUp.Services
         {
             return _chatsRepository.GetMessages(senderId, receiverId);
         }
+        public List<Message> GetLastMessages(int userId)
+        {
+            return _chatsRepository.GetLastMessages(userId);
+        }
     }
 }

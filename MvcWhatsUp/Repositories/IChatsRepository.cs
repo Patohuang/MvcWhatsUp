@@ -5,5 +5,6 @@ namespace MvcWhatsUp.Repositories
     {
         void AddMessage(Message message);
         List<Message> GetMessages(int senderId, int receiverId);
+        List<Message> GetLastMessages(int userId);
     }
 }
